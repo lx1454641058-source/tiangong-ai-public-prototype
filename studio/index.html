@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>天工 Studio · AI 游戏内容引擎</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23e9a84b'/><text x='32' y='44' font-size='38' text-anchor='middle'>天</text></svg>" />
+    <link rel="stylesheet" href="./studio.css" />
+    <link rel="stylesheet" href="./studio-v2.css" />
+    <link rel="stylesheet" href="./studio-flow.css" />
+  </head>
+  <body>
+    <div class="gate-screen" id="auth-screen">
+      <div class="auth-glow auth-glow-one"></div><div class="auth-glow auth-glow-two"></div>
+      <div class="auth-layout">
+        <section class="auth-pitch">
+          <div class="brand brand-large"><span class="brand-mark">天</span><div><strong>天工 Studio</strong><small>AI 游戏内容引擎</small></div></div>
+          <span class="hero-kicker">TIANGONG GAME CONTENT ENGINE</span>
+          <h1>让玩家的每一次想象，都能成为游戏里的新内容。</h1>
+          <p>从原生数据接入、规则配置，到玩家提示词驱动的道具生成，天工帮助游戏厂商把可控的生成式玩法真正接入游戏。</p>
+          <div class="auth-proof"><span>✓</span><div><strong>守恒可验证</strong><small>材料、能量、价值和库存由确定性引擎裁决</small></div></div>
+          <div class="auth-proof"><span>✓</span><div><strong>画风可适配</strong><small>通过 StylePack 约束2D和3D资源风格</small></div></div>
+          <div class="auth-proof"><span>✓</span><div><strong>接入可追踪</strong><small>从试点合作到正式上线都有清晰进度</small></div></div>
+        </section>
+        <section class="auth-card">
+          <div class="auth-tabs"><button class="auth-tab active" data-auth-mode="login">登录</button><button class="auth-tab" data-auth-mode="register">注册厂商账号</button></div>
+          <div class="auth-heading"><span class="eyebrow" id="auth-eyebrow">WELCOME BACK</span><h2 id="auth-title">进入天工工作台</h2><p id="auth-description">使用演示账号即可体验完整接入流程。</p></div>
+          <form id="auth-form">
+            <div class="auth-register-only is-hidden"><label>公司或团队名称<input id="auth-company" type="text" placeholder="例如：星河工作室" /></label></div>
+            <label>邮箱<input id="auth-email" type="email" value="demo@tiangong.ai" placeholder="name@studio.com" required /></label>
+            <label>密码<input id="auth-password" type="password" value="tiangong123" placeholder="至少8位密码" required /></label>
+            <div class="auth-register-only is-hidden"><label>团队规模<select id="auth-size"><option>1-5人</option><option>6-20人</option><option>21-100人</option><option>100人以上</option></select></label></div>
+            <div class="auth-hint" id="auth-hint">演示账号：demo@tiangong.ai / tiangong123</div>
+            <button class="primary-btn full auth-submit" type="submit" id="auth-submit">登录并进入工作台</button>
+          </form>
+          <small class="auth-legal">继续即表示同意天工的试用条款和数据处理说明。本原型仅保存浏览器本地演示数据。</small>
+        </section>
+      </div>
+    </div>
+
+    <div class="gate-screen is-hidden" id="onboarding-screen">
+      <div class="onboarding-card">
+        <div class="onboarding-top"><div class="brand"><span class="brand-mark">天</span><div><strong>天工 Studio</strong><small>首次使用引导</small></div></div><span class="step-count" id="onboarding-count">01 / 03</span></div>
+        <div class="onboarding-progress"><i id="onboarding-progress-bar"></i></div>
+        <div class="onboarding-content" id="onboarding-content"></div>
+        <div class="onboarding-actions"><button class="ghost-btn" id="onboarding-skip">跳过导览</button><button class="primary-btn" id="onboarding-next">下一步</button></div>
+      </div>
+    </div>
+
+    <div class="studio-shell is-hidden" id="studio-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">天</span><div><strong>天工 Studio</strong><small>AI 游戏内容引擎</small></div></div>
+        <div class="project-select"><span>当前接入项目</span><strong id="sidebar-project-name">Pixel Pathfinder</strong><small id="sidebar-project-meta">Godot 4.3 · 本地试用环境</small></div>
+        <nav>
+          <span class="nav-label">合作流程</span>
+          <button class="nav-item active" data-view="overview">工作台</button>
+          <button class="nav-item" data-view="capabilities">了解天工</button>
+          <button class="nav-item" data-view="project">创建接入项目</button>
+          <button class="nav-item" data-view="partnership">联系合作</button>
+          <button class="nav-item" data-view="sandbox">开发联调</button>
+          <button class="nav-item" data-view="launch">验收上线</button>
+          <span class="nav-label technical-label">引擎配置</span>
+          <button class="nav-item" data-view="knowledge">RAG 知识库</button>
+          <button class="nav-item" data-view="agent">Agent 与模型</button>
+          <button class="nav-item" data-view="rules">规则引擎</button>
+          <button class="nav-item" data-view="adapter">Runtime SDK</button>
+          <button class="nav-item" data-view="release">发布与审计</button>
+        </nav>
+        <div class="sidebar-account"><span class="account-avatar" id="account-avatar">演</span><div><strong id="account-name">演示团队</strong><small id="account-email">demo@tiangong.ai</small></div><button class="logout-btn" id="logout-btn" title="退出登录">↗</button></div>
+        <div class="sidebar-foot"><span class="status-dot"></span>本地 Agent 服务正常</div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div><p class="eyebrow">AI CONTENT ENGINE FOR GAME STUDIOS</p><h1 id="page-title">引擎总览</h1></div>
+        <div class="top-actions"><span class="version-chip" id="release-chip">接入阶段 1 / 6 · 了解天工</span><button class="ghost-btn" id="help-btn">帮助中心</button><button class="primary-btn" id="header-action">继续接入</button></div>
+      </header>
+
+        <section class="view active" id="overview-view">
+          <div class="hero-card">
+            <div><span class="hero-kicker">TIANGONG CONSERVATION ENGINE</span><h2>玩家只表达意图，天工负责让每份材料有去向、每项能力有来源。</h2><p>面向游戏厂商配置游戏知识、基础工艺和五套守恒账本。Agent 规划过程，确定性规则引擎核算结果，游戏服务器掌握库存与最终发放。</p><button class="primary-btn" data-view-jump="project">查看接入链路</button></div>
+            <div class="hero-orb"><span>天工</span><small>ENGINE 0.5</small></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card"><span>接入游戏</span><strong>1</strong><small>Pixel Pathfinder</small></div>
+            <div class="stat-card"><span>知识文档</span><strong id="knowledge-count">11</strong><small>按 gameId 与版本隔离</small></div>
+            <div class="stat-card"><span>守恒账本</span><strong>5</strong><small>物质 · 能量 · 属性 · 价值 · 复杂度</small></div>
+            <div class="stat-card accent"><span>Runtime 状态</span><strong>已连通</strong><small>Godot 试用版</small></div>
+          </div>
+          <div class="architecture-strip panel">
+            <div class="architecture-node"><span>01</span><strong>游戏原生数据</strong><small>装备、背包、角色、宠物</small></div><i>→</i>
+            <div class="architecture-node"><span>02</span><strong>Runtime SDK</strong><small>标准协议与身份验证</small></div><i>→</i>
+            <div class="architecture-node"><span>03</span><strong>RAG + Agent</strong><small>理解意图并补全合法基础工艺</small></div><i>→</i>
+            <div class="architecture-node"><span>04</span><strong>守恒规则引擎</strong><small>逐步核算五账本与副产物</small></div><i>→</i>
+            <div class="architecture-node"><span>05</span><strong>游戏服务器</strong><small>原子扣料、发放和审计</small></div>
+          </div>
+          <div class="two-col">
+          <div class="panel"><div class="panel-title"><div><span class="eyebrow">PARTNER WORKFLOW</span><h3>厂商接入进度</h3></div><span class="step-count" id="overview-progress-count">1 / 6</span></div><div class="steps"><div class="step done"><b>01</b><div><strong>注册并了解天工</strong><span>厂商工作台已建立</span></div></div><div class="step current"><b>02</b><div><strong>创建游戏项目</strong><span>登记引擎、平台和首个能力</span></div></div><div class="step"><b>03</b><div><strong>联系合作团队</strong><span>生成项目评估和接口清单</span></div></div><div class="step"><b>04</b><div><strong>Runtime 与规则联调</strong><span>映射原生材料并运行预览</span></div></div><div class="step"><b>05</b><div><strong>完整流程验收</strong><span>成功、失败、扣料和资产审核</span></div></div><div class="step"><b>06</b><div><strong>锁定版本并上线</strong><span>生成最终接入交付清单</span></div></div></div></div>
+            <div class="panel"><div class="panel-title"><div><span class="eyebrow">OWNERSHIP</span><h3>系统责任边界</h3></div></div><div class="capability-list"><div><span class="cap-icon magic">知</span><div><strong>天工负责</strong><small>检索、规划、规则裁决、结果签名</small></div><em>Engine</em></div><div><span class="cap-icon model">桥</span><div><strong>SDK 负责</strong><small>翻译游戏原生数据和天工协议</small></div><em>Runtime</em></div><div><span class="cap-icon fire">游</span><div><strong>游戏负责</strong><small>玩家界面、库存、扣料和发放</small></div><em>Authority</em></div></div></div>
+          </div>
+          <div class="panel workflow-next"><div><span class="eyebrow">NEXT RECOMMENDED ACTION</span><h3 id="next-action-title">先了解天工能为你的游戏做什么</h3><p id="next-action-copy">完成能力导览后，可以创建接入项目并向天工团队发起合作申请。</p></div><button class="primary-btn" data-view-jump="capabilities" id="next-action-btn">开始了解</button></div>
+        </section>
+
+        <section class="view" id="capabilities-view">
+          <div class="section-heading"><div><span class="eyebrow">WHY TIANGONG</span><h2>了解天工能做什么</h2><p>先选择你想接入的能力，天工会把对应的接口、规则和资源准备工作列出来。</p></div><span class="version-chip">厂商能力导览</span></div>
+          <div class="capability-hero panel"><div><span class="hero-kicker">FROM NATIVE DATA TO LIVE CONTENT</span><h3>让玩家参与内容生产，但让厂商始终掌握边界。</h3><p>天工把玩家提示词转化为规则可验证的操作计划，再生成符合游戏画风和经济系统的新内容。</p></div><div class="capability-flow"><span>原生材料</span><i>→</i><span>提示词</span><i>→</i><span>规则裁决</span><i>→</i><span>游戏资产</span></div></div>
+          <div class="feature-grid">
+            <article class="feature-card selected"><div class="feature-icon amber">⚒</div><span class="tag">推荐从这里开始</span><h3>武器与装备锻造</h3><p>消耗游戏原生武器、材料和精华，通过玩家描述的工艺生成新的装备。</p><div class="feature-meta"><span>适合：2D / 3D RPG</span><button class="text-btn" data-use-case="武器锻造">选择能力 →</button></div></article>
+            <article class="feature-card"><div class="feature-icon violet">✦</div><span class="tag">角色成长</span><h3>角色 / 宠物合成</h3><p>将属性、技能、外观和成长材料组合，生成可控的角色或宠物进化结果。</p><div class="feature-meta"><span>适合：养成 / 卡牌</span><button class="text-btn" data-use-case="角色与宠物进化">选择能力 →</button></div></article>
+            <article class="feature-card"><div class="feature-icon teal">◈</div><span class="tag">资源生产</span><h3>炼丹与消耗品</h3><p>让材料通过提示词形成药剂、符文、食物和临时能力，支持失败副产物。</p><div class="feature-meta"><span>适合：生存 / 沙盒</span><button class="text-btn" data-use-case="炼丹与消耗品">选择能力 →</button></div></article>
+            <article class="feature-card"><div class="feature-icon blue">◇</div><span class="tag">内容生产</span><h3>动态2D / 3D资源</h3><p>由材料、画风包和玩家提示词生成新图像或模型，并经过技术规格审核。</p><div class="feature-meta"><span>需要：StylePack</span><button class="text-btn" data-use-case="动态资产生成">选择能力 →</button></div></article>
+          </div>
+          <div class="two-col feature-bottom"><div class="panel"><div class="panel-title"><div><span class="eyebrow">CONTROL BOUNDARY</span><h3>天工与厂商如何分工</h3></div></div><div class="boundary-row"><span class="boundary-mark owner">厂</span><div><strong>厂商定义边界</strong><small>世界观、原生材料、数值上限、风格和库存权威</small></div><em>你掌握</em></div><div class="boundary-row"><span class="boundary-mark engine">天</span><div><strong>天工负责计算</strong><small>提示词解析、RAG检索、规则裁决、资产生成和审核</small></div><em>引擎提供</em></div><div class="boundary-row"><span class="boundary-mark player">玩</span><div><strong>玩家探索组合</strong><small>选择材料、描述工艺、承担失败并发现新配方</small></div><em>玩家创造</em></div></div><div class="panel"><div class="panel-title"><div><span class="eyebrow">INTEGRATION FIT</span><h3>接入前需要准备什么</h3></div><span class="step-count">约 1～2 周</span></div><ul class="prep-list"><li><b>01</b><span>整理游戏原生材料和装备ID</span><em>厂商</em></li><li><b>02</b><span>确定规则边界、属性预算和失败产物</span><em>厂商</em></li><li><b>03</b><span>提供10～30张代表性美术资源</span><em>厂商</em></li><li><b>04</b><span>导入SDK并完成库存事务联调</span><em>双方</em></li></ul></div></div>
+          <div class="center-action"><button class="primary-btn" data-view-jump="project">创建我的接入项目</button></div>
+        </section>
+
+        <section class="view" id="project-view">
+          <div class="section-heading"><div><span class="eyebrow">STEP 01 · PROJECT SETUP</span><h2>创建接入项目</h2><p>先登记游戏和目标能力，之后天工会为项目生成专属的gameId、知识空间和接口清单。</p></div><span class="version-chip" id="project-status-chip">尚未提交</span></div>
+          <div class="panel project-setup-panel"><div class="setup-intro"><span class="setup-number">01</span><div><h3>告诉天工你的游戏是什么</h3><p>这里只保存项目配置，不会读取或复制你的真实玩家库存。</p></div></div><div class="project-form-grid"><label>游戏名称<input id="project-game-name" value="Pixel Pathfinder" placeholder="例如：星火遗境" /></label><label>游戏引擎<select id="project-engine"><option>Godot 4.3</option><option>Unity 2022 LTS</option><option>Unreal Engine 5</option><option>自研引擎 / Web</option></select></label><label>目标平台<select id="project-platform"><option>PC / Web</option><option>移动端</option><option>主机</option><option>跨平台</option></select></label><label>首个接入能力<select id="project-use-case"><option>武器锻造</option><option>角色与宠物进化</option><option>炼丹与消耗品</option><option>动态资产生成</option></select></label></div><div class="setup-actions"><span id="project-form-message">保存后即可生成合作申请和接口清单。</span><button class="primary-btn" id="create-project-btn">保存项目并继续</button></div></div>
+          <div class="adapter-layout">
+            <div class="panel"><h3>游戏项目</h3><div class="rule-row"><span>游戏引擎</span><strong>Godot 4.3</strong></div><div class="rule-row"><span>接入方式</span><strong>HTTP Runtime SDK</strong></div><div class="rule-row"><span>库存权威</span><strong>游戏服务器</strong></div><div class="rule-row"><span>目标能力</span><strong>武器锻造</strong></div></div>
+            <div class="panel"><h3>原生数据来源</h3><div class="integration-check"><span class="check-ok">✓</span><div><strong>GameState.equipment</strong><small>已穿戴装备</small></div><em>已映射</em></div><div class="integration-check"><span class="check-ok">✓</span><div><strong>GameState.bag</strong><small>背包装备</small></div><em>已映射</em></div><div class="integration-check"><span class="check-ok">✓</span><div><strong>refine_dust / essences</strong><small>精粹和词条精华</small></div><em>已映射</em></div></div>
+          </div>
+          <div class="section-heading compact"><div><span class="eyebrow">SCHEMA PREVIEW</span><h2>原生材料协议预览</h2></div></div>
+          <div class="data-grid" id="materials-grid"></div>
+          <div class="panel next-step-panel"><div><span class="eyebrow">STEP 02 · PARTNERSHIP</span><h3>项目已登记，下一步联系天工合作</h3><p>提交项目资料后，我们会根据引擎、玩法和目标能力生成适配建议。</p></div><button class="primary-btn" data-view-jump="partnership">填写合作申请</button></div>
+        </section>
+
+        <section class="view" id="partnership-view">
+          <div class="section-heading"><div><span class="eyebrow">STEP 02 · PARTNER WITH TIANGONG</span><h2>联系合作与接口接入</h2><p>提交一份简短的合作申请，天工团队会在原型中模拟接收、评估和建立联调空间。</p></div><span class="version-chip" id="partnership-status-chip">待提交</span></div>
+          <div class="partner-layout"><div class="panel partner-form-panel"><div class="setup-intro"><span class="setup-number">02</span><div><h3>合作需求</h3><p>以下信息用于生成接入方案，不需要填写密钥。</p></div></div><label>联系人姓名<input id="partner-contact" placeholder="例如：林舟" /></label><label>工作邮箱<input id="partner-email" type="email" placeholder="contact@studio.com" /></label><label>希望沟通的内容<select id="partner-topic"><option>技术接入与SDK</option><option>联合测试与玩法设计</option><option>商业合作与报价</option><option>专属模型和私有部署</option></select></label><label>补充说明<textarea id="partner-note" placeholder="简单介绍游戏类型、计划上线时间和希望先验证的能力"></textarea></label><button class="primary-btn full" id="submit-partnership-btn">提交合作申请</button><p class="form-footnote" id="partnership-form-message">提交后将创建一个合作编号，并开放项目联调空间。</p></div><div class="panel partner-timeline"><div class="panel-title"><div><span class="eyebrow">PARTNER JOURNEY</span><h3>合作会经历什么</h3></div></div><div class="partner-step active"><b>01</b><div><strong>资料评估</strong><small>确认游戏引擎、能力范围和数据边界</small></div><span>当前</span></div><div class="partner-step"><b>02</b><div><strong>接口方案</strong><small>生成Runtime SDK、API和数据映射清单</small></div><span>待开始</span></div><div class="partner-step"><b>03</b><div><strong>联合联调</strong><small>用测试材料跑通预览、失败和库存结算</small></div><span>待开始</span></div><div class="partner-step"><b>04</b><div><strong>验收上线</strong><small>通过规则、资产和性能检查后发布</small></div><span>待开始</span></div><div class="contact-card"><span>天工合作团队</span><strong>partner@tiangong.ai</strong><small>工作日 10:00 - 18:00 · 原型演示通道</small></div></div></div>
+          <div class="panel application-result is-hidden" id="application-result"><div class="result-icon">✓</div><div><span class="eyebrow">APPLICATION CREATED</span><h3>合作申请已进入评估</h3><p>申请编号：<code id="application-id">TG-000000</code>。下一步可以进入开发联调，查看接口和测试用例。</p></div><button class="primary-btn" data-view-jump="sandbox">进入开发联调</button></div>
+        </section>
+
+        <section class="view" id="knowledge-view">
+          <div class="section-heading"><div><span class="eyebrow">RETRIEVAL AUGMENTED GENERATION</span><h2>分层知识库</h2><p>自然语言知识帮助 Agent 理解游戏；关键数值保存在结构化、版本化的规则包中，不交给模型自由解释。</p></div><button class="primary-btn" id="reindex-btn">重建试用索引</button></div>
+          <div class="notice"><strong>知识边界：</strong>RAG 只检索当前 gameId、targetType 和版本。库存是实时输入，美术知识不产生数值，模型不能改写守恒参数。</div>
+          <div class="data-grid" id="knowledge-grid"></div>
+        </section>
+
+        <section class="view" id="agent-view">
+          <div class="section-heading"><div><span class="eyebrow">MODEL ORCHESTRATION</span><h2>Agent 与模型</h2><p>模型只生成结构化合成计划，不能决定成功率或操作库存。</p></div><span class="sandbox-status"><span class="status-dot"></span>mock-rag-agent</span></div>
+          <div class="rule-layout">
+            <div class="panel rule-card"><h3>模型供应商</h3><div class="rule-row"><span>当前 Provider</span><strong>Mock</strong></div><div class="rule-row"><span>真实模型接口</span><strong>OpenAI-compatible</strong></div><div class="rule-row"><span>输出格式</span><strong>CraftPlan JSON</strong></div><div class="rule-row"><span>温度</span><strong>0.2</strong></div></div>
+            <div class="panel rule-card"><h3>Agent 可以输出</h3><ul class="check-list"><li>目标、材料分工和作用部位</li><li>玩家指定的操作顺序与取舍</li><li>厂商登记的基础工艺辅助</li><li>受规则约束的 AssetSpec 资产规格</li></ul></div>
+            <div class="panel rule-card"><h3>Agent 禁止输出</h3><ul class="deny-list"><li>成功率、物质和能量数值</li><li>未提交的材料与未登记能力</li><li>守恒豁免或免费属性</li><li>库存和存档操作</li></ul></div>
+          </div>
+          <div class="panel code-panel model-env"><div class="code-head"><span>真实模型环境变量</span><span class="copy-label">服务端配置</span></div><pre>TIANGONG_MODEL_PROVIDER=compatible
+TIANGONG_MODEL_URL=https://your-provider.example/v1/chat/completions
+TIANGONG_MODEL_NAME=your-model
+TIANGONG_MODEL_API_KEY=***</pre></div>
+        </section>
+
+        <section class="view" id="rules-view">
+          <div class="section-heading"><div><span class="eyebrow">DETERMINISTIC CONSERVATION ENGINE</span><h2>守恒规则引擎</h2><p>提示词决定路径与效率，不创造预算；相同条件重复使用不会衰减。</p></div><span class="version-chip">forge_conservation_v2</span></div>
+          <div class="section-heading compact"><div><span class="eyebrow">FIVE LAWS</span><h2>天工五律</h2></div></div><div class="data-grid" id="laws-grid"></div>
+          <div class="section-heading compact"><div><span class="eyebrow">CONSERVATION LEDGERS</span><h2>五套结算账本</h2></div></div><div class="data-grid" id="ledgers-grid"></div>
+          <div class="section-heading compact"><div><span class="eyebrow">OPERATION REGISTRY</span><h2>厂商工序注册表</h2></div></div><div class="data-grid" id="operations-grid"></div>
+          <div class="section-heading compact"><div><span class="eyebrow">EFFECT REGISTRY</span><h2>效果与属性潜能门槛</h2></div></div><div class="data-grid" id="effects-grid"></div>
+        </section>
+
+        <section class="view" id="sandbox-view">
+          <div class="section-heading"><div><span class="eyebrow">DEVELOPER TEST BENCH</span><h2>开发测试台</h2><p>这是厂商联调用测试台，不是玩家合成界面。它会真实经过 API、RAG Agent 和规则引擎。</p></div><span class="sandbox-status"><span class="status-dot"></span>Agent API</span></div>
+          <div class="sandbox-layout">
+            <div class="panel sandbox-form"><div class="form-label">目标原型</div><select id="studio-target"><option value="sword">长剑</option><option value="bow">猎弓</option><option value="wand">奥术法杖</option></select><div class="form-label">模拟游戏原生材料</div><div class="material-picker" id="studio-materials"></div><div class="form-label">玩家提示词</div><textarea id="studio-prompt">以精铁为骨，以火焰核心为刃；用封装和分层稳定燃烧，持续命中，牺牲爆发换取稳定。</textarea><button class="primary-btn full" id="studio-run">运行 Agent 预览</button></div>
+            <div class="panel result-panel"><div class="result-head"><div><span class="eyebrow">AGENT TRACE</span><h3>检索、规划与裁决</h3></div><span class="preview-badge" id="studio-preview-badge">待运行</span></div><div id="studio-result" class="empty-result"><div class="empty-icon">引</div><p>运行一次厂商联调预览</p><small>RAG → CraftPlan → Rule Engine</small></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="adapter-view">
+          <div class="section-heading"><div><span class="eyebrow">RUNTIME SDK</span><h2>游戏引擎适配器</h2><p>SDK 负责协议、资产下载与审计桥接；玩家界面、库存和内容发放继续由游戏拥有。</p></div><span class="version-chip">Godot Adapter 0.5</span></div>
+          <div class="adapter-layout"><div class="panel"><h3>Godot 试用接入</h3><div class="integration-check"><span class="check-ok">✓</span><div><strong>原生材料读取</strong><small>装备、背包、精粹、词条精华</small></div><em>通过</em></div><div class="integration-check"><span class="check-ok">✓</span><div><strong>Agent 预览 API</strong><small>RAG 检索与规则轨迹</small></div><em>通过</em></div><div class="integration-check"><span class="check-warn">!</span><div><strong>库存事务</strong><small>冻结、扣除、解冻</small></div><em class="warn-text">待接入</em></div><div class="integration-check"><span class="check-warn">!</span><div><strong>结果签名验证</strong><small>正式游戏服务器实现</small></div><em class="warn-text">待接入</em></div></div><div class="panel code-panel"><div class="code-head"><span>runtime-manifest.json</span><span class="copy-label">协议示例</span></div><pre>{
+  "gameId": "pixel_pathfinder_tiangong_demo",
+  "engine": "godot-4.3",
+  "sdkVersion": "0.5.0",
+  "knowledgeVersion": "pp_knowledge_v4_asset_generation",
+  "ruleVersion": "forge_conservation_v2",
+  "assetSpecVersion": "asset_spec_v1",
+  "serverAuthority": true
+}</pre></div></div>
+        </section>
+
+        <section class="view" id="launch-view">
+          <div class="section-heading"><div><span class="eyebrow">STEP 04 · GO LIVE</span><h2>验收与上线</h2><p>当项目、合作、规则、资产和Runtime都通过检查后，生成正式版本并交给游戏服务器接管。</p></div><span class="version-chip" id="launch-status-chip">准备中</span></div>
+          <div class="launch-hero panel"><div><span class="hero-kicker">PRODUCTION READINESS</span><h3 id="launch-title">完成下面的检查，就可以形成第一个可交付版本。</h3><p id="launch-description">原型会记录每一步的完成状态；正式产品中这里对应真实的版本审批和发布权限。</p></div><div class="launch-score"><strong id="launch-score">2 / 6</strong><small>项已完成</small></div></div>
+          <div class="launch-grid"><div class="panel"><div class="panel-title"><div><span class="eyebrow">READINESS CHECKLIST</span><h3>上线检查清单</h3></div><span class="step-count" id="launch-check-label">进行中</span></div><div class="readiness-list" id="readiness-list"><div class="readiness-item done" data-check="account"><span>✓</span><div><strong>厂商账号与团队已建立</strong><small>负责人和合作联系方式可追踪</small></div><em>已完成</em></div><div class="readiness-item" data-check="project"><span>2</span><div><strong>接入项目已登记</strong><small>gameId、引擎和目标能力已确认</small></div><em>待完成</em></div><div class="readiness-item" data-check="partner"><span>3</span><div><strong>合作申请已提交</strong><small>天工团队已收到项目需求</small></div><em>待完成</em></div><div class="readiness-item" data-check="runtime"><span>4</span><div><strong>Runtime SDK 已联通</strong><small>可读取原生材料并调用预览API</small></div><em>待完成</em></div><div class="readiness-item" data-check="test"><span>5</span><div><strong>完整炼制流程已通过</strong><small>成功、失败、扣料和资产审核均有记录</small></div><em>待完成</em></div><div class="readiness-item" data-check="audit"><span>6</span><div><strong>规则与资产版本已锁定</strong><small>知识、规则、StylePack和SDK版本一致</small></div><em>待完成</em></div></div><button class="primary-btn full" id="launch-btn" disabled>完成检查后生成上线版本</button></div><div class="panel release-preview-panel"><div class="panel-title"><div><span class="eyebrow">DELIVERY PACKAGE</span><h3>最终交付内容</h3></div></div><div class="delivery-card"><span class="delivery-icon">API</span><div><strong>Runtime SDK 与接口清单</strong><small>认证、预览、结算、资产下载和审计回调</small></div><em>v0.5.0</em></div><div class="delivery-card"><span class="delivery-icon">规</span><div><strong>知识库与规则包</strong><small>按gameId隔离，支持版本回滚</small></div><em>v4 / v2</em></div><div class="delivery-card"><span class="delivery-icon">图</span><div><strong>StylePack 与资产管线</strong><small>2D预览、正式资源和3D扩展接口</small></div><em>v1</em></div><div class="delivery-card"><span class="delivery-icon">审</span><div><strong>审计与验收报告</strong><small>守恒、提示词控制、库存事务和性能结果</small></div><em>待生成</em></div></div></div>
+          <div class="panel launch-success is-hidden" id="launch-success"><div class="result-icon">✓</div><div><span class="eyebrow">VERSION READY</span><h3>天工接入版本已经成型</h3><p>版本号：<code id="launch-version">TG-PP-0.5.0</code>。这就是正式产品中交给游戏厂商验收的交付节点。</p></div><button class="ghost-btn" id="download-manifest-btn">下载接入清单</button></div>
+        </section>
+
+        <section class="view" id="release-view">
+          <div class="section-heading"><div><span class="eyebrow">VERSION & AUDIT</span><h2>发布与审计</h2><p>知识、模型配置和规则分别版本化，运行结果保留完整追踪记录。</p></div><button class="primary-btn" id="release-btn">创建试用版本</button></div>
+          <div class="two-col"><div class="panel"><h3>待发布内容</h3><div class="rule-row"><span>知识库</span><strong>pp_knowledge_v4_asset_generation</strong></div><div class="rule-row"><span>规则包</span><strong>forge_conservation_v2</strong></div><div class="rule-row"><span>Runtime SDK</span><strong>godot_0.5.0</strong></div><div class="rule-row"><span>资产配置</span><strong>asset_spec_v1 / style_pack_v1</strong></div></div><div class="panel"><h3>审计字段</h3><ul class="check-list"><li>requestId 与单次结算状态</li><li>检索文档 ID 和 CraftPlan</li><li>五账本输入、输出与守恒检查</li><li>资产指纹、相似度、材料覆盖与技术规格</li></ul></div></div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./studio.js"></script>
+  </body>
+</html>

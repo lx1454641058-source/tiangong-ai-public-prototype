@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survivors Partner Demo · 天工武器研发</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23e9a84b'/><text x='32' y='44' font-size='38' text-anchor='middle'>天</text></svg>" />
+    <link rel="stylesheet" href="./game.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="game-topbar">
+        <div class="game-logo">
+          <span>SP</span>
+          <div><strong>Survivors Partner Demo</strong><small>游戏内天工适配器测试场</small></div>
+        </div>
+        <div class="player-stats">
+          <div><small>生命</small><b>86 / 100</b><i class="health"><em></em></i></div>
+          <div><small>金币</small><b>240</b></div>
+          <div><small>波次</small><b>07</b></div>
+          <button class="forge-launch" id="open-tiangong"><span>天</span>打开天工</button>
+          <button class="back-btn" id="back-studio">返回 Studio</button>
+        </div>
+      </header>
+
+      <section class="game-layout">
+        <div class="arena-wrap">
+          <canvas id="arena" width="900" height="650"></canvas>
+          <div class="arena-label"><span class="live-dot"></span>LIVE · 火山遗迹</div>
+          <div class="arena-tip">WASD 移动 · <span id="arena-weapon-label">当前武器：未命名长剑</span></div>
+        </div>
+
+        <aside class="game-sidebar" id="game-sidebar">
+          <div class="sidebar-head">
+            <div><span class="eyebrow">IN-GAME CONTENT SYSTEM</span><h1>天工研发所</h1></div>
+            <span class="mini-status"><i></i>Agent 在线</span>
+          </div>
+
+          <nav class="game-tabs" aria-label="游戏内功能板块">
+            <button class="active" data-panel="forge">天工研发</button>
+            <button data-panel="battle">战斗状态</button>
+            <button data-panel="inventory">武器库</button>
+          </nav>
+
+          <section class="panel-view active" data-panel-view="forge">
+            <div class="section-intro"><div><span class="eyebrow">WEAPON DEVELOPMENT</span><h2>自制武器工作台</h2></div><span class="server-badge">服务器规则</span></div>
+            <div class="weapon-card" id="weapon-card"></div>
+            <div class="progress-flow" aria-label="武器研发阶段">
+              <div class="progress-step active" data-stage="prototype"><b>01</b><span>武器胚</span></div>
+              <div class="progress-line"></div>
+              <div class="progress-step" data-stage="analysis"><b>02</b><span>意图解析</span></div>
+              <div class="progress-line"></div>
+              <div class="progress-step" data-stage="trial"><b>03</b><span>材料试制</span></div>
+              <div class="progress-line"></div>
+              <div class="progress-step" data-stage="combat"><b>04</b><span>实战验证</span></div>
+            </div>
+
+            <div class="agent-console" id="agent-console">
+              <div class="console-head"><span class="pulse"></span><strong>天工 Agent 观察窗</strong><small>规则受限运行</small></div>
+              <p>等待你的设计意图。Agent 只会调用游戏厂商登记的材料、效果和武器规则。</p>
+            </div>
+
+            <div class="forge-form">
+              <label class="field-label" for="game-target">武器胚子</label>
+              <select id="game-target"><option value="sword">长剑胚 · 近战输出</option><option value="bow">猎弓胚 · 远程机动</option><option value="wand">法杖胚 · 元素法术</option></select>
+              <label class="field-label">投入材料 <small>材料决定物质与能力上限</small></label>
+              <div class="game-materials" id="game-materials"></div>
+              <label class="field-label" for="game-prompt">设计提示词 <small>描述构型、取舍和效果目标</small></label>
+              <textarea id="game-prompt">以精铁矿为骨，以火焰核心为核心；封装火焰并稳定锻打，优先持续燃烧，牺牲爆发换取稳定。</textarea>
+              <button class="forge-btn" id="game-preview"><span>解析设计</span><small>生成一份研发记录</small></button>
+            </div>
+
+            <div id="game-preview-card" class="game-preview-card">
+              <div class="preview-placeholder"><span>天</span><p>投入材料并提交设计后，天工 Agent 会生成一份单一研发记录。</p></div>
+            </div>
+            <div class="event-log" id="event-log"><span>系统：已接入游戏库存和战斗规则。</span></div>
+          </section>
+
+          <section class="panel-view" data-panel-view="battle">
+            <div class="section-intro"><div><span class="eyebrow">COMBAT LOADOUT</span><h2>战斗状态</h2></div><span class="server-badge green">运行中</span></div>
+            <div class="battle-card" id="battle-card"></div>
+            <div class="battle-notice"><strong>实战验证</strong><p>完成的自制武器会进入当前出战槽。武器的效果、伤害和外观配方由服务器签名后写回游戏。</p></div>
+            <button class="forge-btn secondary" data-open-panel="forge">继续研发武器</button>
+          </section>
+
+          <section class="panel-view" data-panel-view="inventory">
+            <div class="section-intro"><div><span class="eyebrow">CUSTOM WEAPON ARCHIVE</span><h2>武器库</h2></div><span class="server-badge">玩家资产</span></div>
+            <div class="inventory-list" id="weapon-history"></div>
+            <button class="forge-btn secondary" data-open-panel="forge">进入天工研发所</button>
+          </section>
+        </aside>
+      </section>
+    </main>
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>
